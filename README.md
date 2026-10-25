@@ -18,24 +18,18 @@
 
 ## 📌 Overview
 
-Offline MongoDB (mongod / mongos) configuration security auditor
+OMongoX is an offline MongoDB (mongod / mongos) configuration auditor. It parses YAML-subset and legacy INI option files to review network bind, authentication, cluster auth, TLS, JavaScript, HTTP/REST, profiling, encryption at rest, and audit logging. Findings map to CIS MongoDB, CWE, and MITRE ATT&CK with multi-format export and CI gates.
 
 ---
 
 ## ✨ Features
 
-- Tolerant hand-rolled YAML-subset parser for mongod.conf / mongos.conf (nested maps, block & flow lists, quoting, comments, dotted keys, per-key line origin, tab & duplicate-key detection) — stdlib only
-- Legacy INI (key = value) parser with option mapping to modern dotted names (bind_ip, auth, sslMode ...)
-- Network exposure — bindIp wildcard / missing / public, bindIpAll, default port, unix socket perms
-- Authentication — authorization, transitionToAuth, localhost bypass, SCRAM-SHA-1, LDAP transport
-- Cluster auth — replica set / sharding without keyFile or x509, keyFile permissions & strength
-- TLS — disabled / allowTLS / preferTLS vs requireTLS, invalid certs & hostnames, legacy protocols, certificateKeyFile permission hints
-- Server-side JavaScript, legacy HTTP / REST / JSONP
-- Profiling / logging data exposure, audit log, WiredTiger encryption at rest, __exec / __rest
-- CIS MongoDB Benchmark + CWE + MITRE ATT&CK mapping
-- Offline --root discovery + systemd unit checks
-- Export TXT / Markdown / JSON / CSV / SARIF 2.1.0
-- Self-test --demo, CI gates --fail-on / --min-severity
+- Tolerant YAML-subset and legacy INI parsers with dotted-key mapping and file:line origin
+- Network exposure: bindIp wildcard/missing/public, bindIpAll, default port, unix socket perms
+- Authentication and cluster auth: authorization, transitionToAuth, localhost bypass, SCRAM-SHA-1, keyFile/x509
+- TLS review: disabled/allowTLS/preferTLS vs requireTLS, legacy protocols, cert key permissions
+- Server-side JavaScript, legacy HTTP/REST/JSONP, profiling/logging exposure, WiredTiger encryption, audit log
+- Offline `--root` discovery, systemd unit checks, TXT/MD/JSON/CSV/SARIF, `--demo` and fail-on gates
 
 ---
 
@@ -49,7 +43,10 @@ Offline MongoDB (mongod / mongos) configuration security auditor
 ## 🚀 Usage
 
 ```bash
-./OMongoX
+./OMongoX -c /etc/mongod.conf --scan
+./OMongoX --root ./fs --json -o mongo.json --fail-on high
+./OMongoX --demo --list-rules
+./OMongoX --help
 ```
 
 ---
